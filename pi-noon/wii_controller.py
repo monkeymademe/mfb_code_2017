@@ -1,28 +1,11 @@
-# CamJam EduKit 3 - Robotics
-# Wii controller remote control script
+# Based of the CamJam EduKit 3 - Robotics kit code found https://github.com/recantha/EduKit3-Bluetooth
+# Wii controller remote control script using the explorer hat pro
 
 import explorerhat
-import RPi.GPIO as GPIO # Import the GPIO Library
 import time # Import the Time library
 import os
 
 eh = explorerhat
-
-# Set the GPIO modes
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-
-# Set variables for the GPIO motor pins
-pinMotorAForwards = 10
-pinMotorABackwards = 9
-pinMotorBForwards = 8
-pinMotorBBackwards = 7
-
-# Set the GPIO Pin mode
-GPIO.setup(pinMotorAForwards, GPIO.OUT)
-GPIO.setup(pinMotorABackwards, GPIO.OUT)
-GPIO.setup(pinMotorBForwards, GPIO.OUT)
-GPIO.setup(pinMotorBBackwards, GPIO.OUT)
 
 # Turn all motors off
 def StopMotors():
@@ -50,31 +33,31 @@ def Right():
 StopMotors()
 
 # Credit for this part must go to:
-# Author : Matt Hawkins (adapted by Michael Horne)
+# Author : Matt Hawkins (adapted by Michael Horne and then updated to use the explorer hat pro by James Mitchell) 
 # http://www.raspberrypi-spy.co.uk/?p=1101
 # -----------------------
 # Import required Python libraries
 # -----------------------
 import cwiid
 
-explorerhat.light[0].on()
+eh.light[0].on()
 button_delay = 0.1
 
 print 'Press 1 + 2 on your Wii Remote now ...'
-explorerhat.light[0].on()
+eh.light[0].on()
 time.sleep(1)
 
 # Connect to the Wii Remote. If it times out
 # then quit.
 try:
     wii=cwiid.Wiimote()
-    explorerhat.light[0].off()
-    explorerhat.light[3].on()
+    eh.light[0].off()
+    eh.light[3].on()
 
 except RuntimeError:
     print "Error opening wiimote connection"
-    explorerhat.light[2].on()
-    explorerhat.light[3].off()
+    eh.light[2].on()
+    eh.light[3].off()
     # Uncomment this line to shutdown the Pi if pairing fails
     #os.system("sudo halt")
     quit()
@@ -82,12 +65,6 @@ except RuntimeError:
 print 'Wii Remote connected...\n'
 print 'Press some buttons!\n'
 print 'Press PLUS and MINUS together to disconnect and quit.\n'
-
-#for x in range(0,3):
-#    GPIO.output(PIN_LED, 1)
-#    time.sleep(0.25)
-#    GPIO.output(PIN_LED, 0)
-#    time.sleep(0.25)
 
 wii.rpt_mode = cwiid.RPT_BTN
 
@@ -100,7 +77,7 @@ while True:
     if (buttons - cwiid.BTN_PLUS - cwiid.BTN_MINUS == 0):  
         print '\nClosing connection ...'
         wii.rumble = 1
-        explorerhat.light[2].on()
+        eh.light[2].on()
         time.sleep(1)
         wii.rumble = 0
         os.system("sudo halt")
