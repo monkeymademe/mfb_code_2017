@@ -43,24 +43,30 @@ import cwiid
 eh.light[0].on()
 button_delay = 0.1
 
-print 'Press 1 + 2 on your Wii Remote now ...'
-eh.light[0].on()
-time.sleep(1)
+#print 'Press 1 + 2 on your Wii Remote now ...'
+#eh.light[0].on()
+#time.sleep(1)
 
 # Connect to the Wii Remote. If it times out
 # then quit.
-try:
-    wii=cwiid.Wiimote()
-    eh.light[0].off()
-    eh.light[3].on()
+while True: 
+    try:
+        print 'Press 1 + 2 on your Wii Remote now ...'
+	eh.light[0].on()
+	eh.light[2].off()
+	time.sleep(1)
+	wii=cwiid.Wiimote()
+        eh.light[0].off()
+        eh.light[3].on()
+	break
 
-except RuntimeError:
-    print "Error opening wiimote connection"
-    eh.light[2].on()
-    eh.light[3].off()
-    # Uncomment this line to shutdown the Pi if pairing fails
-    #os.system("sudo halt")
-    quit()
+    except RuntimeError:
+        print "Error opening wiimote connection"
+	eh.light[0].off()
+        eh.light[2].on()
+        eh.light[3].off()
+        time.sleep(2)
+	pass
 
 print 'Wii Remote connected...\n'
 print 'Press some buttons!\n'
